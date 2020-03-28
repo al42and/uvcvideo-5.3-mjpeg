@@ -33,6 +33,7 @@ unsigned int uvc_no_drop_param;
 static unsigned int uvc_quirks_param = -1;
 unsigned int uvc_trace_param;
 unsigned int uvc_timeout_param = UVC_CTRL_STREAMING_TIMEOUT;
+static unsigned int uvc_mjpeg_bpp_param;
 
 /* ------------------------------------------------------------------------
  * Video formats
@@ -518,7 +519,15 @@ static int uvc_parse_format(struct uvc_device *dev,
 		strscpy(format->name, "MJPEG", sizeof(format->name));
 		format->fcc = V4L2_PIX_FMT_MJPEG;
 		format->flags = UVC_FMT_FLAG_COMPRESSED;
-		format->bpp = 0;
+		if ((uvc_mjpeg_bpp_param >= 1) && (uvc_mjpeg_bpp_param <= 16)) {
+			format->bpp = uvc_mjpeg_bpp_param;
+		} else {
+			/* conservative estimate. Actual values are around 1bpp.
+			 * see e.g.
+			 * https://developers.google.com/speed/webp/docs/webp_study
+			 */
+			format->bpp = 4;
+		}
 		ftype = UVC_VS_FRAME_MJPEG;
 		break;
 
@@ -2361,6 +2370,8 @@ module_param_named(trace, uvc_trace_param, uint, S_IRUGO|S_IWUSR);
 MODULE_PARM_DESC(trace, "Trace level bitmask");
 module_param_named(timeout, uvc_timeout_param, uint, S_IRUGO|S_IWUSR);
 MODULE_PARM_DESC(timeout, "Streaming control requests timeout");
+module_param_named(mjpeg_bpp, uvc_mjpeg_bpp_param, uint, S_IRUGO|S_IWUSR);
+MODULE_PARM_DESC(mjpeg_bpp, "MJPEG bits per pixel for bandwidth quirk");
 
 /* ------------------------------------------------------------------------
  * Driver initialization and cleanup
