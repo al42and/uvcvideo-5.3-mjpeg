@@ -1,0 +1,8 @@
+# Ignore build artifacts in case you want to build module right here
+*.o
+*.ko
+.*.cmd
+uvcvideo.mod*
+Module.symvers
+modules.order
+

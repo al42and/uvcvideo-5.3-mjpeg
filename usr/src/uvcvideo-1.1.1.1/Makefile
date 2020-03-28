@@ -1,0 +1,16 @@
+KERNEL_VERSION=$(shell uname -r)
+KERNEL_MODULES=/lib/modules/$(KERNEL_VERSION)/build
+CONFIG_MEDIA_CONTROLLER=y  # We can probably grep /boot/config-$(uname -r) for it, but whatever
+
+# SPDX-License-Identifier: GPL-2.0
+uvcvideo-objs  := uvc_driver.o uvc_queue.o uvc_v4l2.o uvc_video.o uvc_ctrl.o \
+		  uvc_status.o uvc_isight.o uvc_debugfs.o uvc_metadata.o uvc_entity.o
+obj-m += uvcvideo.o
+
+all:
+	$(MAKE) -C $(KERNEL_MODULES) M=$(PWD) modules
+
+clean:
+	$(MAKE) -C $(KERNEL_MODULES) M=$(PWD) clean
+
+
