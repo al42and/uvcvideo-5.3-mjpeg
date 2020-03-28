@@ -3,7 +3,7 @@
 set -e
 
 dkms_name="uvcvideo"
-dkms_version="1.1.1.1"
+dkms_version="1.1.2"
 
 case "$1" in
   configure)
