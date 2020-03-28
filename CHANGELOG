@@ -1,0 +1,5 @@
+uvcvideo-5.3-mjpeg-dkms (1.0.0-1) UNRELEASED; urgency=low
+
+ * Module from 5.3.0 kernel with MJPEG bandwidth patch from Pavel Rojtberg
+
+ -- Andrey Alekseenko <al42and@gmail.com> Sat, 28 Mar 2020 14:24:15 -0400
